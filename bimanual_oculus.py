@@ -317,13 +317,13 @@ def record_episode(left_robot_interface, right_robot_interface, oculus, cameras,
         camera_image_1=[],
         camera_image_2=[],
         camera_image_3=[],
+        language_instruction=[],
     )
     
     # See if we want to use language instruction
     lang = args.instr if args.instr is not None else input("Language instruction? ")
-    lang = None if lang == "" else lang
-    if lang is not None:
-        episode["language_instruction"] = [lang]
+    lang = "" if lang == None else lang
+    episode["language_instruction"] = [lang]
     
     print("Start episode. Press Ctrl+C to stop recording.")
     
@@ -378,7 +378,7 @@ def record_episode(left_robot_interface, right_robot_interface, oculus, cameras,
                 episode["right_delta_action"].append(right_action)
                 episode["left_gripper_position"].append(left_gripper)
                 episode["right_gripper_position"].append(right_gripper)
-                
+
                 # Store compressed image (convert to JPEG in memory to save space)
                 # _, jpeg_image = cv2.imencode('.jpg', camera_image, [cv2.IMWRITE_JPEG_QUALITY, 90])
                 # episode["camera_image"].append(jpeg_image.tobytes())
@@ -408,6 +408,7 @@ def record_episode(left_robot_interface, right_robot_interface, oculus, cameras,
                     display_img2 = camera_images[1].copy()
                     display_img3 = camera_images[2].copy()
 
+                    # combined_image = np.hstack((display_img1, display_img2))
                     combined_image = np.hstack((display_img1, display_img2, display_img3))
                     # Add text overlay with episode info
                     # cv2.putText(combined_image, f"Episode: {episode_num}, Step: {len(episode['timestamp'])}", 
